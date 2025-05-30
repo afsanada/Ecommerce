@@ -1,0 +1,692 @@
+{% extends 'store/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Account</li>
+          </ol>
+        </nav>
+        <h1>Account</h1>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Account Section -->
+    <section id="account" class="account section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <!-- Mobile Sidebar Toggle Button -->
+        <div class="sidebar-toggle d-lg-none mb-3">
+          <button class="btn btn-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#profileSidebar" aria-expanded="false" aria-controls="profileSidebar">
+            <i class="bi bi-list me-2"></i> Profile Menu
+          </button>
+        </div>
+
+        <div class="row">
+          <!-- Profile Sidebar -->
+          <div class="col-lg-3 profile-sidebar collapse d-lg-block" id="profileSidebar" data-aos="fade-right" data-aos-delay="200">
+            <div class="profile-header">
+              <div class="profile-avatar">
+                <span>S</span>
+              </div>
+              <div class="profile-info">
+                <h4>Sarah Anderson</h4>
+                <div class="profile-bonus">
+                  <i class="bi bi-gift"></i>
+                  <span>100 bonuses available</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-nav">
+              <ul class="nav flex-column" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="true">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Orders</span>
+                    <span class="badge">1</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="wishlist-tab" data-bs-toggle="tab" data-bs-target="#wishlist" type="button" role="tab" aria-controls="wishlist" aria-selected="false">
+                    <i class="bi bi-heart"></i>
+                    <span>Wishlist</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment" type="button" role="tab" aria-controls="payment" aria-selected="false">
+                    <i class="bi bi-credit-card"></i>
+                    <span>Payment methods</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">
+                    <i class="bi bi-star"></i>
+                    <span>My reviews</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="false">
+                    <i class="bi bi-person"></i>
+                    <span>Personal info</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="addresses-tab" data-bs-toggle="tab" data-bs-target="#addresses" type="button" role="tab" aria-controls="addresses" aria-selected="false">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Addresses</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">
+                    <i class="bi bi-bell"></i>
+                    <span>Notifications</span>
+                  </button>
+                </li>
+              </ul>
+
+              <h6 class="nav-section-title">Customer service</h6>
+              <ul class="nav flex-column">
+                <!-- <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Help center</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="bi bi-file-text"></i>
+                    <span>Terms and conditions</span>
+                  </a>
+                </li> -->
+                <li class="nav-item">
+                  <a href="{% url 'logout' %}" class="nav-link logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Log out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Profile Content -->
+          <div class="col-lg-9 profile-content" data-aos="fade-left" data-aos-delay="300">
+            <div class="tab-content" id="profileTabsContent">
+              <!-- Orders Tab -->
+              <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                <div class="tab-header">
+                  <h2>Orders</h2>
+                  <div class="tab-filters">
+                    <div class="row">
+                      <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="dropdown">
+                          <button class="btn dropdown-toggle" type="button" id="statusFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Select status</span>
+                            <i class="bi bi-chevron-down"></i>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="statusFilter">
+                            <li><a class="dropdown-item" href="#">All statuses</a></li>
+                            <li><a class="dropdown-item" href="#">In progress</a></li>
+                            <li><a class="dropdown-item" href="#">Delivered</a></li>
+                            <li><a class="dropdown-item" href="#">Canceled</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="dropdown">
+                          <button class="btn dropdown-toggle" type="button" id="timeFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>For all time</span>
+                            <i class="bi bi-chevron-down"></i>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="timeFilter">
+                            <li><a class="dropdown-item" href="#">For all time</a></li>
+                            <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                            <li><a class="dropdown-item" href="#">Last 6 months</a></li>
+                            <li><a class="dropdown-item" href="#">Last year</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="orders-table">
+                  <div class="table-header">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="sort-header">
+                          Order #
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="sort-header">
+                          Order date
+                          <i class="bi bi-arrow-down-up"></i>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="sort-header">
+                          Status
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="sort-header">
+                          Total
+                          <i class="bi bi-arrow-down-up"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-items">
+                    <!-- Order Items -->
+                    {% for order in orders %}
+                    <div class="order-item mb-4">
+                      <div class="row align-items-center">
+                        <div class="col-md-3"><div class="order-id">{{ order.order_id }}</div></div>
+                        <div class="col-md-3"><div class="order-date">{{ order.order_date|date:"m/d/Y" }}</div></div>
+                        <div class="col-md-3">
+                          <div class="order-status {{ order.status|lower|slugify }}">
+                            <span class="status-dot"></span>
+                            <span>{{ order.status }}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-3"><div class="order-total">${{ order.total_amount }}</div></div>
+                      </div>
+
+                      <div class="order-products d-flex align-items-center">
+                        <div class="product-thumbnails d-flex gap-2">
+                          {% for item in order.items.all|slice:":3" %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="product-thumb" loading="lazy">
+                          {% endfor %}
+                        </div>
+                        <button type="button" class="order-details-link ms-auto" data-bs-toggle="collapse" data-bs-target="#orderDetails{{ forloop.counter }}" aria-expanded="false" aria-controls="orderDetails{{ forloop.counter }}">
+                          <i class="bi bi-chevron-down"></i>
+                        </button>
+                      </div>
+
+                      <div class="collapse order-details" id="orderDetails{{ forloop.counter }}">
+                        <div class="order-details-content">
+                          <!-- Header -->
+                          <div class="order-details-header">
+                            <h5>Order Details</h5>
+                            <div class="order-info">
+                              <div class="info-item"><span class="info-label">Order Date:</span><span class="info-value">{{ order.order_date|date:"m/d/Y" }}</span></div>
+                              <div class="info-item"><span class="info-label">Payment Method:</span><span class="info-value">{{ order.payment_method }}</span></div>
+                            </div>
+                          </div>
+
+                          <!-- Items -->
+                          <div class="order-items-list">
+                            {% for item in order.items.all %}
+                            <div class="order-item-detail">
+                              <div class="item-image"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy"></div>
+                              <div class="item-info">
+                                <h6>{{ item.product.name }}</h6>
+                                <div class="item-meta">
+                                  <span class="item-sku">SKU: {{ item.product.sku }}</span>
+                                  <span class="item-qty">Qty: {{ item.quantity }}</span>
+                                </div>
+                              </div>
+                              <div class="item-price">${{ item.price }}</div>
+                            </div>
+                            {% endfor %}
+                          </div>
+
+                          <!-- Summary -->
+                          <div class="order-summary">
+                            <div class="summary-row"><span>Subtotal:</span><span>${{ order.subtotal }}</span></div>
+                            <div class="summary-row"><span>Shipping:</span><span>${{ order.shipping_cost }}</span></div>
+                            <div class="summary-row"><span>Tax:</span><span>${{ order.tax }}</span></div>
+                            <div class="summary-row total"><span>Total:</span><span>${{ order.total_amount }}</span></div>
+                          </div>
+
+                          <!-- Shipping Info -->
+                          <div class="shipping-info">
+                            <div class="shipping-address">
+                              <h6>Shipping Address</h6>
+                              <p>{{ order.shipping_address.line1 }}<br>
+                                {{ order.shipping_address.line2 }}<br>
+                                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip }}<br>
+                                {{ order.shipping_address.country }}</p>
+                            </div>
+                            <div class="shipping-method">
+                              <h6>Shipping Method</h6>
+                              <p>{{ order.shipping_method }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+
+                  <div class="pagination-container mt-4">
+                    <nav aria-label="Orders pagination">
+                      <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                            </a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                          </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                          <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                          </li>
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Wishlist Tab -->
+              <div class="tab-pane fade" id="wishlist" role="tabpanel" aria-labelledby="wishlist-tab">
+                <div class="tab-header">
+                  <h2>Wishlist</h2>
+                </div>
+                <div class="wishlist-items">
+                  <div class="row">
+                    {% for item in wishlist_items %}
+                      <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                        <div class="wishlist-item">
+                          <div class="wishlist-image">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy">
+                            <form method="post" action="{% url 'remove_wishlist' item.product.id %}">
+                              {% csrf_token %}
+                              <button class="remove-wishlist" type="submit">
+                                <i class="bi bi-x-lg"></i>
+                              </button>
+                            </form>
+                          </div>
+                          <div class="wishlist-content">
+                            <h5>{{ item.product.name }}</h5>
+                            <div class="product-price">${{ item.product.price }}</div>
+                            <form method="post" action="{% url 'add_to_cart' item.product.id %}">
+                              {% csrf_token %}
+                              <button class="btn btn-add-cart">Add to cart</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    {% empty %}
+                      <p class="text-muted">Your wishlist is empty.</p>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment Methods Tab -->
+              <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                <div class="tab-header">
+                  <h2>Payment Methods</h2>
+                  <button class="btn btn-add-payment" type="button">
+                    <i class="bi bi-plus-lg"></i> Add payment method
+                  </button>
+                </div>
+                <div class="payment-methods">
+                  <!-- Payment Method 1 -->
+                  <div class="payment-method-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="payment-card">
+                      <div class="card-type">
+                        <i class="bi bi-credit-card"></i>
+                      </div>
+                      <div class="card-info">
+                        <div class="card-number">**** **** **** 4589</div>
+                        <div class="card-expiry">Expires 09/2026</div>
+                      </div>
+                      <div class="card-actions">
+                        <button class="btn-edit-card" type="button">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn-delete-card" type="button">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="default-badge">Default</div>
+                  </div><!-- End Payment Method -->
+
+                  <!-- Payment Method 2 -->
+                  <div class="payment-method-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="payment-card">
+                      <div class="card-type">
+                        <i class="bi bi-credit-card"></i>
+                      </div>
+                      <div class="card-info">
+                        <div class="card-number">**** **** **** 7821</div>
+                        <div class="card-expiry">Expires 05/2025</div>
+                      </div>
+                      <div class="card-actions">
+                        <button class="btn-edit-card" type="button">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn-delete-card" type="button">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-make-default" type="button">Make default</button>
+                  </div><!-- End Payment Method -->
+                </div>
+              </div>
+
+              <!-- Reviews Tab -->
+              <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                <div class="tab-header">
+                  <h2>My Reviews</h2>
+                </div>
+                <div class="reviews-list">
+                  {% for review in reviews %}
+                  <div class="review-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                    <div class="review-header">
+                      <div class="review-product">
+                        <img src="{{ review.product.image.url }}" alt="{{ review.product.name }}" class="product-image" loading="lazy">
+                        <div class="product-info">
+                          <h5>{{ review.product.name }}</h5>
+                          <div class="review-date">Reviewed on {{ review.created_at|date:"m/d/Y" }}</div>
+                        </div>
+                      </div>
+                      <div class="review-rating">
+                        {% for i in "12345" %}
+                          {% if forloop.counter <= review.rating %}
+                            <i class="bi bi-star-fill"></i>
+                          {% else %}
+                            <i class="bi bi-star"></i>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="review-content">
+                      <p>{{ review.comment }}</p>
+                    </div>
+                    <div class="review-actions">
+                      <button class="btn btn-sm btn-edit-review" type="button">Edit</button>
+                      <button class="btn btn-sm btn-delete-review" type="button">Delete</button>
+                    </div>
+                  </div>
+                  {% empty %}
+                  <p>No reviews found.</p>
+                  {% endfor %}
+                </div>
+              </div>
+
+
+              <!-- Personal Info Tab -->
+              <div class="tab-pane fade" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <div class="tab-header">
+                  <h2>Personal Information</h2>
+                </div>
+                <div class="personal-info-form" data-aos="fade-up" data-aos-delay="100">
+                 <form method="POST" action="{% url 'personal_info' %}" >
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="firstName" class="form-label">First Name</label>
+                      <input type="text" class="form-control" id="firstName" name="firstName" value="{{ user.first_name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="lastName" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" id="lastName" name="lastName" value="{{ user.last_name }}" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="phone" class="form-label">Phone</label>
+                      <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phone_number }}">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="birthdate" class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{ profile.birthdate|date:'Y-m-d' }}">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label d-block">Gender</label>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male" {% if profile.gender == "male" %}checked{% endif %}>
+                      <label class="form-check-label" for="genderMale">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" {% if profile.gender == "female" %}checked{% endif %}>
+                      <label class="form-check-label" for="genderFemale">Female</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other" {% if profile.gender == "other" %}checked{% endif %}>
+                      <label class="form-check-label" for="genderOther">Other</label>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <button type="submit" class="btn btn-save">Save Changes</button>
+                  </div>
+                </form>
+                </div>
+              </div>
+
+              <!-- Addresses Tab -->
+              <div class="tab-pane fade" id="addresses" role="tabpanel" aria-labelledby="addresses-tab">
+                <div class="tab-header">
+                  <h2>My Addresses</h2>
+                  <button class="btn btn-add-address" type="button">
+                    <i class="bi bi-plus-lg"></i> Add new address
+                  </button>
+                </div>
+                <div class="addresses-list">
+                  <div class="row">
+                    {% for address in addresses %}
+                      <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                        <div class="address-item">
+                          <div class="address-header">
+                            <h5>{{ address.title }}</h5>
+                            <div class="address-actions">
+                              <button class="btn-edit-address" type="button" data-id="{{ address.id }}">
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                              <button class="btn-delete-address" type="button" data-id="{{ address.id }}">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <div class="address-content">
+                            <p>{{ address.street }}<br>
+                              {{ address.city }}, {{ address.state }} {{ address.zip_code }}<br>
+                              {{ address.country }}
+                            </p>
+                          </div>
+                          {% if address.is_default %}
+                            <div class="default-badge">Default</div>
+                          {% else %}
+                            <button class="btn btn-sm btn-make-default" type="button" data-id="{{ address.id }}">Make default</button>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% empty %}
+                      <p>No addresses found.</p>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notifications Tab -->
+              <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                <form method="POST" action="{% url 'personal_info' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="notification_form" value="1">
+
+                  <div class="tab-header">
+                    <h2>Notification Settings</h2>
+                  </div>
+
+                  <div class="notifications-settings" data-aos="fade-up" data-aos-delay="100">
+
+                    <!-- Order Updates -->
+                    <div class="notification-group">
+                      <h5>Order Updates</h5>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Order status changes</div>
+                          <div class="notification-desc">Receive notifications when your order status changes</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="orderStatusNotif" id="orderStatusNotif"
+                            {% if notification_pref.order_status %}checked{% endif %}>
+                          <label class="form-check-label" for="orderStatusNotif"></label>
+                        </div>
+                      </div>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Shipping updates</div>
+                          <div class="notification-desc">Receive notifications about shipping and delivery</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="shippingNotif" id="shippingNotif"
+                            {% if notification_pref.shipping_updates %}checked{% endif %}>
+                          <label class="form-check-label" for="shippingNotif"></label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Account Activity -->
+                    <div class="notification-group">
+                      <h5>Account Activity</h5>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Security alerts</div>
+                          <div class="notification-desc">Receive notifications about security-related activity</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="securityNotif" id="securityNotif"
+                            {% if notification_pref.security_alerts %}checked{% endif %}>
+                          <label class="form-check-label" for="securityNotif"></label>
+                        </div>
+                      </div>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Password changes</div>
+                          <div class="notification-desc">Receive notifications when your password is changed</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="passwordNotif" id="passwordNotif"
+                            {% if notification_pref.password_changes %}checked{% endif %}>
+                          <label class="form-check-label" for="passwordNotif"></label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Marketing -->
+                    <div class="notification-group">
+                      <h5>Marketing</h5>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Promotions and deals</div>
+                          <div class="notification-desc">Receive notifications about special offers and discounts</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="promoNotif" id="promoNotif"
+                            {% if notification_pref.promotions %}checked{% endif %}>
+                          <label class="form-check-label" for="promoNotif"></label>
+                        </div>
+                      </div>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">New product arrivals</div>
+                          <div class="notification-desc">Receive notifications when new products are added</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="newProductNotif" id="newProductNotif"
+                            {% if notification_pref.new_products %}checked{% endif %}>
+                          <label class="form-check-label" for="newProductNotif"></label>
+                        </div>
+                      </div>
+
+                      <div class="notification-item">
+                        <div class="notification-info">
+                          <div class="notification-title">Personalized recommendations</div>
+                          <div class="notification-desc">Receive notifications with product recommendations based on your interests</div>
+                        </div>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" name="recommendNotif" id="recommendNotif"
+                            {% if notification_pref.recommendations %}checked{% endif %}>
+                          <label class="form-check-label" for="recommendNotif"></label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="notification-actions">
+                      <button type="submit" class="btn btn-save">Save Preferences</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Account Section -->
+
+  </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Check if the URL has a hash
+    const hash = window.location.hash;
+    if (hash) {
+      const triggerTab = document.querySelector(`a[href="${hash}"]`);
+      if (triggerTab) {
+        new bootstrap.Tab(triggerTab).show();  // Activate the tab
+      }
+    }
+
+    // Optional: update URL hash when tab is clicked (for deep linking)
+    const tabLinks = document.querySelectorAll('a[data-bs-toggle="tab"]');
+    tabLinks.forEach(link => {
+      link.addEventListener('shown.bs.tab', function (event) {
+        history.replaceState(null, null, event.target.getAttribute('href'));
+      });
+    });
+  });
+</script>
+
+  {% endblock %}

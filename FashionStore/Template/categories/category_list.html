@@ -1,0 +1,77 @@
+{% extends "admins/base.html" %}
+
+{% block content %}
+<style>
+  .category-container {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .category-header {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f2937;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .add-btn {
+    background-color: #6b1240;;
+    border: 1px solid #999;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .add-btn:hover {
+    background-color: #a0003a;
+  }
+
+  .category-list {
+    padding-left: 20px;
+    color: #2563eb; /* blue links */
+    font-size: 16px;
+  }
+
+  .category-list a {
+    text-decoration: none;
+    color: #2563eb;
+  }
+
+  .category-list a:hover {
+    text-decoration: underline;
+  }
+
+  .no-category {
+    color: #888;
+    font-style: italic;
+  }
+</style>
+
+<div class="category-container">
+  <div class="category-header">
+    <span>Categories</span>
+    <a href="{% url 'add_category' %}" class="add-btn">+ Add Category</a>
+  </div>
+
+  {% if categories %}
+    <ul class="category-list">
+      {% for category in categories %}
+        <li><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-category">No categories available.</p>
+  {% endif %}
+</div>
+{% endblock %}

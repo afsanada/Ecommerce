@@ -1,0 +1,99 @@
+{% extends "admins/base.html" %}
+
+{% block content %}
+<style>
+  .category-container {
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 700px;
+  }
+
+  .category-container h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 20px;
+  }
+
+  .category-container h2 {
+    font-size: 20px;
+    margin-top: 25px;
+    color: #6b1240;
+    font-weight: 600;
+  }
+
+  .category-container ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-top: 10px;
+    padding-left: 10px;
+  }
+
+  .category-container li {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  .category-container {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .category-container a:hover {
+    text-decoration: underline;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 30px;
+    background-color: #6b1240;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .back-link:hover {
+    background-color: #560d32;
+  }
+
+  .no-products {
+    margin-top: 15px;
+    color: #6b7280;
+    font-style: italic;
+  }
+</style>
+
+<div class="category-container">
+  <h1>{{ category.name }}</h1>
+
+  {% if children %}
+    <h2>Subcategories</h2>
+    <ul>
+      {% for child in children %}
+        <li><a href="{% url 'category_detail' child.slug %}">{{ child.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if products %}
+    <h2>Products</h2>
+    <ul>
+      {% for product in products %}
+        <li>{{ product.name }} – ₹{{ product.price }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-products">No products found in this category.</p>
+  {% endif %}
+
+  <a href="{% url 'category_list' %}" class="back-link">← Back to Categories</a>
+</div>
+{% endblock %}

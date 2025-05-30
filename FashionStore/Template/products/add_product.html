@@ -1,0 +1,25 @@
+{% extends "admins/base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header text-white text-center" style="background-color: #11375c;">
+                    <h4>{{ title }}</h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="text-center mt-3" >
+                            <button type="submit" class="btn btn-success" style="background-color: #6b1240; border: none;">{{ button_text }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

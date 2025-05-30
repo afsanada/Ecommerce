@@ -1,0 +1,90 @@
+{% extends "account/base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 sidebar">
+      <div class="d-flex align-items-center mb-3">
+        <div class="profile-circle">S</div>
+        <div class="ms-3">
+          <strong>Sarah Anderson</strong><br>
+          <small>🎁 100 bonuses available</small>
+        </div>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active text-white bg-danger rounded mb-2" href="#"><i class="bi bi-box"></i> Orders</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-heart"></i> Wishlist</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-wallet2"></i> Payment methods</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-star"></i> My reviews</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-person"></i> Personal info</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-geo-alt"></i> Addresses</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="#"><i class="bi bi-bell"></i> Notifications</a></li>
+        <li class="nav-item mt-3"><a class="nav-link text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h4>Orders</h4>
+          <nav><small>Home / Account</small></nav>
+        </div>
+        <div class="d-flex gap-2">
+          <select class="form-select"><option selected>Select status</option></select>
+          <select class="form-select"><option selected>For all time</option></select>
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="table-responsive shadow rounded p-3 bg-white">
+        <table class="table table-borderless align-middle">
+          <thead class="fw-semibold text-muted border-bottom">
+            <tr>
+              <th>Order #</th>
+              <th>Order date</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td>
+                {{ order.order_id }}
+                <div class="d-flex mt-2">
+                  {% for item in order.items.all|slice:":3" %}
+                    <img src="{{ item.product.image.url }}" class="order-img" alt="product">
+                  {% endfor %}
+                  {% if order.items.count > 3 %}
+                    <span class="badge bg-secondary align-self-center">+{{ order.items.count|add:"-3" }}</span>
+                  {% endif %}
+                </div>
+              </td>
+              <td>{{ order.order_date|date:"m/d/Y" }}</td>
+              <td>
+                {% if order.status == 'Delivered' %}
+                  <span class="text-success"><span class="status-dot">●</span>Delivered</span>
+                {% elif order.status == 'In progress' %}
+                  <span class="text-warning"><span class="status-dot">●</span>In progress</span>
+                {% elif order.status == 'Cancelled' %}
+                  <span class="text-danger"><span class="status-dot">●</span>Cancelled</span>
+                {% else %}
+                  {{ order.status }}
+                {% endif %}
+              </td>
+              <td>${{ order.total_amount }}</td>
+              <td><button class="btn btn-sm btn-light"><i class="bi bi-chevron-down"></i></button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+

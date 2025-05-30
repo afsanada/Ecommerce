@@ -1,0 +1,544 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>FashionStore</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/fav.jpeg' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/drift-zoom/drift-basic.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: FashionStore
+  * Template URL: https://bootstrapmade.com/fashion-store-bootstrap-template/
+  * Updated: Apr 26 2025 with Bootstrap v5.3.5
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header position-relative">
+    <!-- Top Bar -->
+    <div class="top-bar py-2 d-none d-lg-block">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <div class="top-bar-item me-4">
+                <i class="bi bi-telephone-fill me-2"></i>
+                <span>Customer Support: </span>
+                <a href="tel:+1234567890">+1 (234) 567-890</a>
+              </div>
+              <div class="top-bar-item">
+                <i class="bi bi-envelope-fill me-2"></i>
+                <a href="mailto:support@example.com">support@example.com</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="d-flex justify-content-end">
+              <!-- <div class="top-bar-item me-4">
+                <a href="track-order.html">
+                  <i class="bi bi-truck me-2"></i>Track Order
+                </a>
+              </div> -->
+              <div class="top-bar-item dropdown me-4">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                  <i class="bi bi-translate me-2"></i>English
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-check2 me-2 selected-icon"></i>English</a></li>
+                  <li><a class="dropdown-item" href="#">Español</a></li>
+                  <li><a class="dropdown-item" href="#">Français</a></li>
+                  <li><a class="dropdown-item" href="#">Deutsch</a></li>
+                </ul>
+              </div>
+              <div class="top-bar-item dropdown">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                  <i class="bi bi-currency-dollar me-2"></i>USD
+                </a>
+                <!-- <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#"><i class="bi bi-check2 me-2 selected-icon"></i>USD</a></li>
+                  <li><a class="dropdown-item" href="#">EUR</a></li>
+                  <li><a class="dropdown-item" href="#">GBP</a></li>
+                </ul> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="{% url 'home' %}" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="{% static 'img/logo.webp' %}" alt=""> -->
+            <h1 class="sitename">Fashion<span>Store</span></h1>
+          </a>
+
+          <!-- Search -->
+          <form class="search-form desktop-search-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for products...">
+              <button class="btn search-btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Account -->
+            <div class="dropdown account-dropdown">
+              <button class="header-action-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+                <span class="action-text d-none d-md-inline-block">Account</span>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-header">
+                  <h6>Welcome to <span class="sitename">FashionStore</span></h6>
+                  <p class="mb-0">Access account &amp; manage orders</p>
+                </div>
+                <div class="dropdown-body">
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'my_account' %}">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>My Profile</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'my_account' %}">
+                    <i class="bi bi-bag-check me-2"></i>
+                    <span>My Orders</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'wishlist' %}">
+                    <i class="bi bi-heart me-2"></i>
+                    <span>My Wishlist</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'returns' %}">
+                    <i class="bi bi-arrow-return-left me-2"></i>
+                    <span>Returns &amp; Refunds</span>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="{% url 'settings' %}">
+                    <i class="bi bi-gear me-2"></i>
+                    <span>Settings</span>
+                  </a>
+                </div>
+                <div class="dropdown-footer">
+                  {% if request.user.is_authenticated %}
+                    <form method="POST" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger w-100">Logout</button>
+                    </form>
+                  {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary w-100 mb-2">Sign In</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary w-100">Register</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Wishlist -->
+            <a href="{% url 'wishlist' %}" class="header-action-btn d-none d-md-flex">
+              <i class="bi bi-heart"></i>
+              <span class="action-text d-none d-md-inline-block">Wishlist</span>
+              <span class="badge">{{ wishlist_count }}</span>
+            </a>
+
+            <!-- Cart -->
+          <div class="dropdown cart-dropdown">
+            <button class="header-action-btn" data-bs-toggle="dropdown">
+              <i class="bi bi-cart3"></i>
+              <span class="action-text d-none d-md-inline-block">Cart</span>
+              <span class="badge">{{ cart_count }}</span>
+            </button>
+
+            <div class="dropdown-menu cart-dropdown-menu">
+              <div class="dropdown-header">
+                <h6>Shopping Cart ({{ cart_count }})</h6>
+              </div>
+              <div class="dropdown-body">
+                <div class="cart-items">
+
+                  {% for item in cart_items %}
+                  <div class="cart-item">
+                    <div class="cart-item-image">
+                      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                    </div>
+                    <div class="cart-item-content">
+                      <h6 class="cart-item-title">{{ item.product.name }}</h6>
+                      <div class="cart-item-meta">{{ item.quantity }} × ₹{{ item.product.price }}</div>
+                    </div>
+                    <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                      {% csrf_token %}
+                      <button class="cart-item-remove" type="submit">
+                        <i class="bi bi-x"></i>
+                      </button>
+                    </form>
+                  </div>
+                  {% empty %}
+                  <p class="text-center text-muted">Your cart is empty.</p>
+                  {% endfor %}
+
+                </div>
+              </div>
+              {% if cart_items %}
+              <div class="dropdown-footer">
+                <div class="cart-total">
+                  <span>Total:</span>
+                  <span class="cart-total-price">₹{{ cart_total_price }}</span>
+                </div>
+                <div class="cart-actions">
+                  <a href="{% url 'cart' %}" class="btn btn-outline-primary">View Cart</a>
+                  <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a></li>
+            <li><a class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a></li>
+            <li><a class="{% if request.resolver_match.url_name == 'products_by_category' and request.resolver_match.kwargs.slug == 'womens' %}active{% endif %}"  href="{% url 'products_by_category' 'womens' %}">Womens</a></li>
+            <li><a class="{% if request.resolver_match.url_name == 'products_by_category' and request.resolver_match.kwargs.slug == 'mens' %}active{% endif %}"  href="{% url 'products_by_category' 'mens' %}">Mens</a></li>
+            <li><a class="{% if request.resolver_match.url_name == 'products' %}active{% endif %}"  href="{% url 'products' %}">All Products</a></li>
+            <li><a class="{% if request.resolver_match.url_name == 'cart_view' %}active{% endif %}"  href="{% url 'cart' %}">Cart</a></li>
+           
+            <!-- Products Mega Menu 2 -->
+            <li class="products-megamenu-2">
+            <a href="#" class="{% if request.resolver_match.url_name == 'category' %}active{% endif %}"  >
+              <span>Category</span> <i class="bi bi-chevron-down toggle-dropdown"></i>
+            </a>
+
+            <!-- Mobile -->
+            <ul class="mobile-megamenu">
+              {% for category in categories %}
+                <li class="dropdown">
+                  <a href="{% url 'products' %}">{{ category.name }} <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                  {% if category.children.all %}
+                    <ul>
+                      {% for child in category.children.all %}
+                        <li><a href="{% url 'products' %}">{{ child.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+
+            <!-- Desktop -->
+            <div class="desktop-megamenu">
+              <div class="megamenu-tabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  {% for category in categories %}
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link {% if forloop.first %}active{% endif %}" 
+                        id="{{ category.slug }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#{{ category.slug }}-content" 
+                        type="button" 
+                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" 
+                        role="tab">{{ category.name|upper }}</button>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="megamenu-content tab-content">
+                {% for category in categories %}
+                  <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" 
+                      id="{{ category.slug }}-content" role="tabpanel" aria-labelledby="{{ category.slug }}-tab">
+                    <div class="category-layout">
+                      <div class="categories-section">
+
+                        <div class="category-links">
+                          <div class="link-row">
+                            {% for child in category.children.all %}
+                              <a href="{% url 'products' %}">{{ child.name }}</a>
+                            {% empty %}
+                              <p>No subcategories available.</p>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="featured-section">
+                        <div class="featured-image">
+                          <img src="{% static 'img/product/product-f-1.webp' %}" alt="{{ category.name }} Featured">
+                          <div class="featured-content">
+                            <h3>{{ category.name }}<br>Collection</h3>
+                            <a href="{% url 'products' %}" class="btn-shop">Shop now</a>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </li>
+            <li><a class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"  href="{% url 'contact' %}">Contact</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar py-2">
+      <div class="container-fluid container-xl">
+        <div class="announcement-slider swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": 1,
+              "effect": "slide",
+              "direction": "vertical"
+            }
+          </script>
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">🚚 Free shipping on orders over $50</div>
+            <div class="swiper-slide">💰 30 days money back guarantee</div>
+            <div class="swiper-slide">🎁 20% off on your first order - Use code: FIRST20</div>
+            <div class="swiper-slide">⚡ Flash Sale! Up to 70% off on selected items</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form class="search-form">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for products...">
+            <button class="btn search-btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+
+  {% block content %}{% endblock %}
+
+
+  <footer id="footer" class="footer light-background">
+    <div class="footer-main">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget footer-about">
+              <a href="index.html" class="logo">
+                <span class="sitename">FashionStore</span>
+              </a>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nibh vehicula, facilisis magna ut, consectetur lorem. Proin eget tortor risus.</p>
+
+              <div class="social-links mt-4">
+                <h5>Connect With Us</h5>
+                <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                  <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                  <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                  <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Shop</h4>
+              <ul class="footer-links">
+                <li><a href="{% url 'category_user' %}">New Arrivals</a></li>
+                <li><a href="{% url 'category_user' %}">Bestsellers</a></li>
+                <li><a href="{% url 'category_user' %}">Women's Clothing</a></li>
+                <li><a href="{% url 'category_user' %}">Men's Clothing</a></li>
+                <li><a href="{% url 'category_user' %}">Accessories</a></li>
+                <li><a href="{% url 'category_user' %}">Sale</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="footer-widget">
+              <h4>Support</h4>
+              <ul class="footer-links">
+                <li><a href="support.html">Help Center</a></li>
+                <li><a href="account.html">Order Status</a></li>
+                <li><a href="shiping-info.html">Shipping Info</a></li>
+                <li><a href="return-policy.html">Returns &amp; Exchanges</a></li>
+                <li><a href="#">Size Guide</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-widget">
+              <h4>Contact Information</h4>
+              <div class="footer-contact">
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>123 Fashion Street, New York, NY 10001</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-telephone"></i>
+                  <span>+1 (555) 123-4567</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-envelope"></i>
+                  <span>hello@example.com</span>
+                </div>
+                <div class="contact-item">
+                  <i class="bi bi-clock"></i>
+                  <span>Monday-Friday: 9am-6pm<br>Saturday: 10am-4pm<br>Sunday: Closed</span>
+                </div>
+              </div>
+
+              <div class="app-buttons mt-4">
+                <a href="#" class="app-btn">
+                  <i class="bi bi-apple"></i>
+                  <span>App Store</span>
+                </a>
+                <a href="#" class="app-btn">
+                  <i class="bi bi-google-play"></i>
+                  <span>Google Play</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="row gy-3 align-items-center">
+          <div class="col-lg-6 col-md-12">
+            <div class="copyright">
+              <p>© <span>Copyright</span> <strong class="sitename">MyWebsite</strong>. All Rights Reserved.</p>
+            </div>
+            <div class="credits mt-1">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you've purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <div class="d-flex flex-wrap justify-content-lg-end justify-content-center align-items-center gap-4">
+              <div class="payment-methods">
+                <div class="payment-icons">
+                  <i class="bi bi-credit-card" aria-label="Credit Card"></i>
+                  <i class="bi bi-paypal" aria-label="PayPal"></i>
+                  <i class="bi bi-apple" aria-label="Apple Pay"></i>
+                  <i class="bi bi-google" aria-label="Google Pay"></i>
+                  <i class="bi bi-shop" aria-label="Shop Pay"></i>
+                  <i class="bi bi-cash" aria-label="Cash on Delivery"></i>
+                </div>
+              </div>
+
+              <div class="legal-links">
+                <a href="tos.html">Terms</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="tos.html">Cookies</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <script>
+  const triggerTabs = document.querySelectorAll('a[data-bs-toggle="tab"]');
+  triggerTabs.forEach(tab => {
+    tab.addEventListener('shown.bs.tab', function (e) {
+      history.replaceState(null, null, e.target.getAttribute('href'));
+    });
+  });
+</script>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/drift-zoom/Drift.min.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title and Breadcrumbs -->
+  <div class="page-title light-background">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="breadcrumbs">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+        </ol>
+      </nav>
+      <h1 class="mt-2">Checkout</h1>
+    </div>
+  </div>
+
+  <!-- Checkout Section -->
+  <section id="checkout" class="checkout section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gx-5">
+        
+        <!-- Left: Checkout Steps and Forms -->
+        <div class="col-lg-8">
+
+          <!-- Step Indicators -->
+          <div class="checkout-steps mb-4" data-aos="fade-up">
+            {% for step_num, step_label in steps.items %}
+              <div class="step {% if current_step == step_num %}active{% endif %}" data-step="{{ step_num }}">
+                <div class="step-number">
+                  {{ step_num }}
+                </div>
+                <div class="step-title ">{{ step_label }}</div>
+              </div>
+              {% if not forloop.last %}
+                <div class="step-connector"></div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- Messages -->
+          {% if messages %}
+            <div class="alert-container mt-3">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Step 1: Customer Information -->
+          <div class="checkout-form {% if current_step == 1 %}active{% else %}d-none{% endif %}" data-form="1">
+            <form method="POST" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="step" value="1">
+              <h3 class="mb-4">Customer Information</h3>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="first_name" class="form-label">First Name</label>
+                  <input id="first_name" type="text" name="first_name" class="form-control" required value="{{ first_name }}">
+                </div>
+                <div class="col-md-6">
+                  <label for="last_name" class="form-label">Last Name</label>
+                  <input id="last_name" type="text" name="last_name" class="form-control" required value="{{ last_name }}">
+                </div>
+              </div>
+              <div class="mt-3">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" type="email" name="email" class="form-control" required value="{{ email }}">
+              </div>
+              <div class="mt-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input id="phone" type="tel" name="phone" class="form-control" required value="{{ phone }}">
+              </div>
+              <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary next-step" name="next" value="2">Continue to Shipping</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 2: Shipping Address -->
+          <div class="checkout-form {% if current_step == 2 %}active{% else %}d-none{% endif %}" data-form="2">
+            <form method="POST" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="step" value="2">
+              <h3 class="mb-4">Shipping Address</h3>
+              <div class="mb-3">
+                <label for="address_line" class="form-label">Street Address</label>
+                <input id="address_line" type="text" name="address_line" class="form-control" required value="{{ address_line }}">
+              </div>
+              <div class="mb-3">
+                <label for="apartment" class="form-label">Apartment, suite, etc. (optional)</label>
+                <input id="apartment" type="text" name="apartment" class="form-control" value="{{ apartment }}">
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="city" class="form-label">City</label>
+                  <input id="city" type="text" name="city" class="form-control" required value="{{ city }}">
+                </div>
+                <div class="col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <input id="state" type="text" name="state" class="form-control" required value="{{ state }}">
+                </div>
+                <div class="col-md-4">
+                  <label for="postal_code" class="form-label">ZIP / Postal Code</label>
+                  <input id="postal_code" type="text" name="postal_code" class="form-control" required value="{{ postal_code }}">
+                </div>
+              </div>
+              <div class="mt-3">
+                <label for="country" class="form-label">Country</label>
+                <select id="country" name="country" class="form-select" required>
+                  <option value="">Select Country</option>
+                  <option value="US" {% if country == "US" %}selected{% endif %}>United States</option>
+                  <option value="CA" {% if country == "CA" %}selected{% endif %}>Canada</option>
+                  <!-- Add more countries as needed -->
+                </select>
+              </div>
+              <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-outline-secondary" name="prev" value="1">Back</button>
+                <button type="submit" class="btn btn-primary" name="next" value="3">Continue to Payment</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 3: Payment Method -->
+          <div class="checkout-form {% if current_step == 3 %}active{% else %}d-none{% endif %}" data-form="3">
+            <form method="POST" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="step" value="3">
+              <h3 class="mb-4">Payment Method</h3>
+
+              <div class="form-check mb-3">
+                <input id="card" type="radio" name="payment_method" value="card" class="form-check-input" {% if payment_method == 'card' %}checked{% endif %}>
+                <label for="card" class="form-check-label">Credit / Debit Card</label>
+              </div>
+
+              <div class="mb-3">
+                <label for="card_number" class="form-label">Card Number</label>
+                <input id="card_number" type="text" name="card_number" class="form-control" required value="{{ card_number }}">
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="expiry" class="form-label">Expiry</label>
+                  <input id="expiry" type="text" name="expiry" class="form-control" placeholder="MM/YY" required value="{{ expiry }}">
+                </div>
+                <div class="col-md-4">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input id="cvv" type="text" name="cvv" class="form-control" required value="{{ cvv }}">
+                </div>
+                <div class="col-md-4">
+                  <label for="card_name" class="form-label">Name on Card</label>
+                  <input id="card_name" type="text" name="card_name" class="form-control" required value="{{ card_name }}">
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-outline-secondary" name="prev" value="2">Back</button>
+                <button type="submit" class="btn btn-primary" name="next" value="4">Review Order</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 4: Review Order -->
+          <div class="checkout-form {% if current_step == 4 %}active{% else %}d-none{% endif %}" data-form="4">
+          <div class="form-header mb-4">
+            <h3>Review Your Order</h3>
+            <p>Please review your information before placing your order</p>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="step" value="4">
+
+            <div class="review-sections">
+              <!-- Contact Information -->
+              <div class="review-section">
+                <div class="review-section-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Contact Information</h5>
+                  <button type="button" class="btn-edit" data-edit="1">Edit</button>
+                </div>
+                <div class="review-section-content mt-1">
+                  <p class="mb-0 fw-semibold">{{ first_name }} {{ last_name }}</p>
+                  <p class="mb-0">{{ email }}</p>
+                  <p class="mb-0">{{ phone }}</p>
+                </div>
+              </div>
+
+              <!-- Shipping Address -->
+              <div class="review-section mt-4">
+                <div class="review-section-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Shipping Address</h5>
+                  <button type="button" class="btn-edit" data-edit="2">Edit</button>
+                </div>
+                <div class="review-section-content mt-1">
+                  <p class="mb-0">
+                    {{ address_line }}{% if apartment %}, {{ apartment }}{% endif %}
+                  </p>
+                  <p class="mb-0">{{ city }}, {{ state }} {{ postal_code }}</p>
+                  <p class="mb-0">{{ country }}</p>
+                </div>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="review-section mt-4">
+                <div class="review-section-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Payment Method</h5>
+                  <button type="button" class="btn-edit" data-edit="3">Edit</button>
+                </div>
+                <div class="review-section-content mt-1">
+                  <p class="mb-0">
+                    <i class="bi bi-credit-card-2-front me-1"></i>
+                    {{ payment_method|title }}
+                    {% if card_number %}
+                      &mdash; ending in {{ card_number|slice:"-4:" }}
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms Agreement -->
+            <div class="form-check mt-4">
+              <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+              <label class="form-check-label" for="terms">
+                I agree to the
+                <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+                and
+                <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+              </label>
+            </div>
+
+            <!-- Success Message -->
+            {% if order_success %}
+              <div class="alert alert-success mt-3">Your order has been placed successfully! Thank you for your purchase.</div>
+            {% endif %}
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-outline-secondary" name="prev" value="3">Back to Payment</button>
+              <button type="submit" class="btn btn-success" name="place_order">Place Order</button>
+            </div>
+          </form>
+        </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <aside class="col-lg-4">
+          <div class="order-summary p-4 shadow-sm rounded" data-aos="fade-left" data-aos-delay="200">
+            <h4 class="mb-4">Order Summary</h4>
+            <div class="order-items mb-3">
+              {% for item in items %}
+                <div class="order-item d-flex align-items-center mb-3">
+                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="60" height="60" class="me-3 rounded">
+                  <div>
+                    <strong>{{ item.product.name }}</strong><br>
+                    <small>{{ item.quantity }} × ${{ item.price|floatformat:2 }}</small>
+                  </div>
+                </div>
+              {% empty %}
+                <p>Your cart is empty.</p>
+              {% endfor %}
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span>${{ subtotal|floatformat:2 }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping:</span>
+              <span>${{ shipping|floatformat:2 }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Tax:</span>
+              <span>${{ tax|floatformat:2 }}</span>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between fw-bold fs-5">
+              <span>Total:</span>
+              <span>${{ total|floatformat:2 }}</span>
+            </div>
+
+            <div class="secure-checkout text-center mt-4 text-muted small">
+              <i class="bi bi-shield-lock"></i> Secure Checkout
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- Modals: Terms and Privacy -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris...</p>
+            <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula...</p>
+            <p>Phasellus molestie magna non est bibendum non venenatis nisl tempor...</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris...</p>
+            <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula...</p>
+            <p>Phasellus molestie magna non est bibendum non venenatis nisl tempor...</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got It</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll(".btn-edit");
+
+    editButtons.forEach(button => {
+      button.addEventListener("click", function () {
+        const stepToEdit = this.getAttribute("data-edit");
+
+        // Hide all checkout forms
+        document.querySelectorAll(".checkout-form").forEach(form => {
+          form.classList.add("d-none");
+          form.classList.remove("active");
+        });
+
+        // Show the selected step
+        const targetForm = document.querySelector(`.checkout-form[data-form="${stepToEdit}"]`);
+        if (targetForm) {
+          targetForm.classList.remove("d-none");
+          targetForm.classList.add("active");
+
+          // Optionally scroll into view
+          targetForm.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

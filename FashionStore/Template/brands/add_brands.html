@@ -1,0 +1,21 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Add Brand</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Brand Name</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_category" class="form-label">Category</label>
+            {{ form.category }}
+        </div>
+        <button type="submit" class="btn btn-success">Add Brand</button>
+        <a href="{% url 'brand_list' %}" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
+{% endblock %}

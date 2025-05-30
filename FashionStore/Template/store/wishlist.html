@@ -1,0 +1,86 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<style>
+  .wishlist-container {
+    padding: 40px 0;
+  }
+
+  .tab-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .wishlist-card {
+    border: 1px solid #e9ecef;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .wishlist-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .wishlist-card img {
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  .btn-sm {
+    margin-right: 5px;
+  }
+
+  .wishlist-empty {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+    padding: 2rem;
+  }
+</style>
+
+<div class="wishlist-container container">
+  <!-- Wishlist Tab -->
+  <div class="tab-header">
+    <h2>My Wishlist</h2>
+  </div>
+
+  {% if wishlist_items %}
+    <div class="row">
+      {% for item in wishlist_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card wishlist-card h-100">
+            <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ item.product.name }}</h5>
+              <p class="card-text">Price: ₹{{ item.product.price }}</p>
+              <a href="{% url 'product_detail' item.product.id %}" class="btn btn-primary btn-sm">View</a>
+              <a href="{% url 'remove_wishlist' item.id %}" class="btn btn-outline-danger btn-sm">Remove</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="wishlist-empty">
+      <i class="bi bi-heartbreak-fill fs-3 text-danger"></i><br>
+      You have no items in your wishlist.
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,502 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+{% load static %}
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Products</li>
+          </ol>
+        </nav>
+        <h1>Products</h1>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-4 sidebar">
+
+          <div class="widgets-container">
+
+            <!-- Product Categories Widget -->
+            <div class="product-categories-widget widget-item">
+            <h3 class="widget-title">Categories</h3>
+            <ul class="category-tree list-unstyled mb-0">
+                {% if has_subcategories %}
+                {% for category in parent_categories %}
+                <li class="category-item">
+                    {% if category.subcategories.all %}
+                    <div class="d-flex justify-content-between align-items-center category-header collapsed" data-bs-toggle="collapse" data-bs-target="#category-{{ category.id }}-subcategories" aria-expanded="false" aria-controls="category-{{ category.id }}-subcategories">
+                        <a href="{% url 'products' category.id %}" class="category-link">{{ category.name }}</a>
+                        <span class="category-toggle">
+                        <i class="bi bi-chevron-down"></i>
+                        <i class="bi bi-chevron-up"></i>
+                        </span>
+                    </div>
+                    <ul id="category-{{ category.id }}-subcategories" class="subcategory-list list-unstyled collapse ps-3 mt-2">
+                        {% for sub in category.subcategories.all %}
+                        <li><a href="{% url 'products' sub.id %}" class="subcategory-link">{{ sub.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="d-flex justify-content-between align-items-center category-header">
+                        <a href="{% url 'products' category.id %}" class="category-link">{{ category.name }}</a>
+                    </div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+                {% else %}
+                <li class="category-item">
+                    {% if categories.subcategories.all %}
+                    <div class="d-flex justify-content-between align-items-center category-header collapsed" data-bs-toggle="collapse" data-bs-target="#category-{{ category.id }}-subcategories" aria-expanded="false" aria-controls="category-{{ category.id }}-subcategories">
+                        <a href="{% url 'products_by_category' parent_categories.id %}" class="category-link">{{ categories.name }}</a>
+                        <span class="category-toggle">
+                        <i class="bi bi-chevron-down"></i>
+                        <i class="bi bi-chevron-up"></i>
+                        </span>
+                    </div>
+                    <ul id="category-{{ categories.id }}-subcategories" class="subcategory-list list-unstyled collapse ps-3 mt-2">
+                        {% for sub in categories.subcategories.all %}
+                        <li><a href="{% url 'products_by_category' sub.id %}" class="subcategory-link">{{ sub.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="d-flex justify-content-between align-items-center category-header">
+                        <a href="{% url 'products_by_category' parent_categories.slug %}" class="category-link">{{ categories.name }}</a>
+                    </div>
+                    {% endif %}
+                </li>
+                {% endif %}
+            </ul>
+            </div>
+            <!--/Product Categories Widget -->
+
+            <!-- Pricing Range Widget -->
+            <!-- Pricing Range Widget -->
+<div class="pricing-range-widget widget-item">
+  <h3 class="widget-title">Price Range</h3>
+
+  <form method="get" id="price-filter-form">
+    <div class="price-range-container">
+      <div class="current-range mb-3">
+        <span class="min-price">$0</span>
+        <span class="max-price float-end">$1000</span>
+      </div>
+
+      <div class="range-slider">
+        <div class="slider-track"></div>
+        <div class="slider-progress"></div>
+        <input type="range" name="min_price" class="min-range" min="0" max="1000" value="{{ request.GET.min_price|default:0 }}" step="10">
+        <input type="range" name="max_price" class="max-range" min="0" max="1000" value="{{ request.GET.max_price|default:1000 }}" step="10">
+      </div>
+
+      <div class="price-inputs mt-3">
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">$</span>
+              <input type="number" name="min_price" class="form-control min-price-input" min="0" max="1000" value="{{ request.GET.min_price|default:0 }}" step="10">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">$</span>
+              <input type="number" name="max_price" class="form-control max-price-input" min="0" max="1000" value="{{ request.GET.max_price|default:1000 }}" step="10">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-actions mt-3">
+        <button type="submit" class="btn btn-sm btn-primary w-100">Apply Filter</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+            <!-- Brand Filter Widget -->
+            <div class="brand-filter-widget widget-item">
+
+              <h3 class="widget-title">Filter by Brand</h3>
+
+              <div class="brand-filter-content">
+                <div class="brand-search">
+                  <input type="text" class="form-control" placeholder="Search brands...">
+                  <i class="bi bi-search"></i>
+                </div>
+                <form method="get" id="brand-filter-form">
+                <div class="brand-list">
+                    {% for brand in brands %}
+                    <div class="brand-item">
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="brand" value="{{ brand.name }}" id="brand-{{ brand.id }}"
+                                {% if brand.name in selected_brands %}checked{% endif %}>
+                        <label class="form-check-label" for="brand-{{ brand.id }}">
+                            {{ brand.name }}
+                            <span class="brand-count">({{ brand.product_count }})</span>
+                        </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="brand-actions mt-3">
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Apply Filter</button>
+                    {% if request.resolver_match.view_name == 'products_by_category' and slug %}
+                    <button type="reset" class="btn btn-sm btn-link" onclick="window.location.href='{% url 'products_by_category' slug %}'">Clear All</button>
+                    {% elif request.resolver_match.view_name == 'products' %}
+                    <button type="reset" class="btn btn-sm btn-link" onclick="window.location.href='{% url 'products' %}'">Clear All</button>
+                    {% else %}
+                    <!-- Fallback if unknown -->
+                    <button type="reset" class="btn btn-sm btn-link">Clear All</button>
+                    {% endif %}
+                </div>
+                </form>
+
+            </div><!--/Brand Filter Widget -->
+
+          </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-8">
+
+          <!-- Category Header Section -->
+          <section id="category-header" class="category-header section">
+
+            <div class="container" data-aos="fade-up">
+
+              <!-- Filter and Sort Options -->
+              <div class="filter-container mb-4" data-aos="fade-up" data-aos-delay="100">
+                <form method="get" id="filterForm">
+                    <div class="row g-3">
+                        <!-- Search -->
+                        <div class="col-12 col-md-6 col-lg-4">
+                        <div class="filter-item search-form">
+                            <label for="productSearch" class="form-label">Search Products</label>
+                            <div class="input-group">
+                            <input type="text" class="form-control" id="productSearch" name="q" value="{{ query }}" placeholder="Search for products...">
+                            <button class="btn search-btn" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="col-12 col-md-6 col-lg-2">
+                        <div class="filter-item">
+                            <label for="priceRange" class="form-label">Price Range</label>
+                            <select class="form-select" id="priceRange" name="price" onchange="document.getElementById('filterForm').submit()">
+                            <option value="" {% if price_range == '' %}selected{% endif %}>All Prices</option>
+                            <option value="under25" {% if price_range == 'under25' %}selected{% endif %}>Under $25</option>
+                            <option value="25to50" {% if price_range == '25to50' %}selected{% endif %}>$25 to $50</option>
+                            <option value="50to100" {% if price_range == '50to100' %}selected{% endif %}>$50 to $100</option>
+                            <option value="100to200" {% if price_range == '100to200' %}selected{% endif %}>$100 to $200</option>
+                            <option value="above200" {% if price_range == 'above200' %}selected{% endif %}>$200 &amp; Above</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <!-- Sort By -->
+                        <div class="col-12 col-md-6 col-lg-2">
+                        <div class="filter-item">
+                            <label for="sortBy" class="form-label">Sort By</label>
+                            <select class="form-select" id="sortBy" name="sortBy" onchange="document.getElementById('filterForm').submit()">
+                            <option value="featured" {% if sort_option == 'featured' %}selected{% endif %}>Featured</option>
+                            <option value="price_asc" {% if sort_option == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price_desc" {% if sort_option == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                            <option value="rating_desc" {% if sort_option == 'rating_desc' %}selected{% endif %}>Customer Rating</option>
+                            <option value="newest" {% if sort_option == 'newest' %}selected{% endif %}>Newest Arrivals</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <!-- Items Per Page -->
+                        <div class="col-12 col-md-6 col-lg-2">
+                            <div class="filter-item">
+                            <label class="form-label">Per Page</label>
+                            <select class="form-select" name="per_page" onchange="document.getElementById('filterForm').submit()">
+                                <option value="12" {% if per_page == 12 %}selected{% endif %}>12</option>
+                                <option value="24" {% if per_page == 24 %}selected{% endif %}>24</option>
+                                <option value="48" {% if per_page == 48 %}selected{% endif %}>48</option>
+                                <option value="96" {% if per_page == 96 %}selected{% endif %}>96</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row mt-3">
+                <div class="col-12" data-aos="fade-up" data-aos-delay="200">
+                    {% if category_id or price_range or query %}
+                    <div class="active-filters">
+                    <span class="active-filter-label">Active Filters:</span>
+                    <div class="filter-tags">
+
+                        <!-- Category Filter -->
+                        {% if category_id %}
+                        {% with current_category=category_id|add:"" %}
+                            {% for parent in parent_categories %}
+                            {% for child in parent.children.all %}
+                                {% if child.id|stringformat:"s" == current_category %}
+                                <span class="filter-tag">
+                                {{ child.name }}
+                                <a href="{% url 'products' %}?{% if price_range %}price={{ price_range }}&{% endif %}{% if query %}q={{ query }}&{% endif %}per_page={{ per_page }}" class="filter-remove">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                                </span>
+                                {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        {% endwith %}
+                        {% endif %}
+
+                        <!-- Price Range Filter -->
+                        {% if price_range %}
+                        <span class="filter-tag">
+                        {% if price_range == 'under25' %}Under $25{% endif %}
+                        {% if price_range == '25to50' %}$25 to $50{% endif %}
+                        {% if price_range == '50to100' %}$50 to $100{% endif %}
+                        {% if price_range == '100to200' %}$100 to $200{% endif %}
+                        {% if price_range == 'above200' %}$200 & Above{% endif %}
+                        <a href="{% url 'products' %}?{% if category_id %}category_id={{ category_id }}&{% endif %}{% if query %}q={{ query }}&{% endif %}per_page={{ per_page }}" class="filter-remove">
+                            <i class="bi bi-x"></i>
+                        </a>
+                        </span>
+                        {% endif %}
+
+                        <!-- Search Query Filter -->
+                        {% if query %}
+                        <span class="filter-tag">
+                        "{{ query }}"
+                        <a href="{% url 'products' %}?{% if category_id %}category_id={{ category_id }}&{% endif %}{% if price_range %}price={{ price_range }}&{% endif %}per_page={{ per_page }}" class="filter-remove">
+                            <i class="bi bi-x"></i>
+                        </a>
+                        </span>
+                        {% endif %}
+
+                        <!-- Clear All Button -->
+                        <a href="{% url 'products' %}?per_page={{ per_page }}" class="clear-all-btn">Clear All</a>
+                    </div>
+                    </div>
+                    {% endif %}
+                </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </section><!-- /Category Header Section -->
+
+        <!-- Category Product List Section -->
+        <section id="category-product-list" class="category-product-list section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4">
+
+            {% if products %}
+                {% for product in products %}
+                <div class="col-lg-6">
+                <div class="product-box">
+                    <div class="product-thumb">
+                    {% if product.is_new %}
+                        <span class="product-label">New Season</span>
+                    {% elif product.is_sale %}
+                        <span class="product-label product-label-sale">-{{ product.sale_percent }}%</span>
+                    {% elif product.is_hot %}
+                        <span class="product-label product-label-hot">Hot</span>
+                    {% elif product.is_sold_out %}
+                        <span class="product-label product-label-sold">Sold Out</span>
+                    {% endif %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" class="main-img" loading="lazy">
+                    <div class="product-overlay">
+                        <div class="product-quick-actions">
+                        <div class="product-quick-actions d-flex gap-2 mt-2">
+                        <!-- Wishlist -->
+                        <a href="{% url 'add_to_wishlist' product.id %}" class="quick-action-btn" title="Add to Wishlist">
+                            <i class="bi bi-heart"></i>
+                        </a>
+
+                        <!-- Compare -->
+                        <a href="#" class="quick-action-btn" title="Compare">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </a>
+
+                        <!-- Quick View Trigger -->
+                        <button class="quick-action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                        </div>
+                        <div class="add-to-cart-container">
+                        <button type="button" class="add-to-cart-btn"  data-product-id="{{ product.id }}" {% if product.is_sold_out %}disabled{% endif %}>
+                            {% if product.is_sold_out %}Sold Out{% else %}Add to Cart{% endif %}
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="product-content">
+                    <div class="product-details">
+                        <h3 class="product-title">
+                        <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                        </h3>
+                        <div class="product-price">
+                        {% if product.discount_price %}
+                            <span class="original">${{ product.price }}</span>
+                            <span class="sale">${{ product.discount_price }}</span>
+                        {% else %}
+                            <span>${{ product.price }}</span>
+                        {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="product-rating-container">
+                        <div class="rating-stars">
+                        {% for i in "12345" %}
+                            {% if product.rating|floatformat:1 >= i %}
+                            <i class="bi bi-star-fill"></i>
+                            {% elif product.rating|floatformat:1 > i|add:'-1' %}
+                            <i class="bi bi-star-half"></i>
+                            {% else %}
+                            <i class="bi bi-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        <span class="rating-number">{{ product.rating }}</span>
+                    </div>
+
+                    <div class="product-color-options">
+                        {% for color in product.colors %}
+                        <span class="color-option {% if forloop.first %}active{% endif %}" style="background-color: {{ color }};"></span>
+                        {% endfor %}
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                <h4>No products available in this category.</h4>
+                </div>
+            {% endif %}
+
+            </div>
+        </div>
+        </section>
+        <!-- /Category Product List Section -->
+
+        <!-- Category Pagination Section -->
+        <section id="category-pagination" class="category-pagination section">
+        <div class="container">
+            {% if products.has_other_pages %}
+            <nav class="d-flex justify-content-center" aria-label="Page navigation">
+            <ul>
+                {% if products.has_previous %}
+                <li>
+                <a href="?page={{ products.previous_page_number }}" aria-label="Previous page">
+                    <i class="bi bi-arrow-left"></i>
+                    <span class="d-none d-sm-inline">Previous</span>
+                </a>
+                </li>
+                {% endif %}
+
+                {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                    <li><a href="#" class="active">{{ num }}</a></li>
+                {% elif num > products.number|add:"-3" and num < products.number|add:"3" %}
+                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if products.has_next %}
+                <li>
+                <a href="?{% if query %}q={{ query }}&{% endif %}
+          {% if price_range %}price={{ price_range }}&{% endif %}
+          {% if sort_option %}sortBy={{ sort_option }}&{% endif %}
+          {% if per_page %}per_page={{ per_page }}&{% endif %}
+          page={{ page_obj.next_page_number }}" aria-label="Next page">
+                    <span class="d-none d-sm-inline">Next</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+                </li>
+                {% endif %}
+            </ul>
+            </nav>
+            {% endif %}
+        </div>
+        </section>
+        <!-- /Category Pagination Section -->
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+  <script>
+  document.getElementById('sortBy').addEventListener('change', function() {
+    const sort = this.value;
+    const url = new URL(window.location.href);
+
+    // Set or update the 'sort' param in the URL
+    url.searchParams.set('sort', sort);
+
+    // Reload the page with new sort query param
+    window.location.href = url.toString();
+  });
+
+  document.getElementById('priceRange').addEventListener('change', function() {
+    document.getElementById('filterForm').submit();
+  });
+</script>
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+
+            fetch(`/cart/add/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: new URLSearchParams({
+                    'quantity': 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            });
+        });
+    });
+});
+</script>
+  {% endblock %}

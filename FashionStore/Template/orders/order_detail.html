@@ -1,0 +1,51 @@
+{% extends 'admins/base.html' %}
+{% block content %}
+<div class="container">
+    <h3>Order #{{ order.order_id }}</h3>
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="status" class="form-label">Status</label>
+                <select name="status" id="status" class="form-select">
+                    {% for choice, label in status_choices %}
+                        <option value="{{ choice }}" {% if order.status == choice %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="tracking_number" class="form-label">Tracking Number</label>
+                <input type="text" name="tracking_number" id="tracking_number" class="form-control" value="{{ order.tracking_number }}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Order</button>
+    </form>
+
+    <h5>Customer</h5>
+    <p><strong>User:</strong> {{ order.user.username }}</p>
+    <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+    <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+
+    <h5 class="mt-4">Items</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price }}</td>
+                <td>₹{{ item.get_total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
