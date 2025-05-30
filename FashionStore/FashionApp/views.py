@@ -287,7 +287,52 @@ def customers_list(request):
 @login_required(login_url='login')  # 'login' is your login page URL name
 def my_account(request):
     user = request.user
-    return render(request, 'store/account.html', {'user': user})
+    profile, _ = UserProfile.objects.get_or_create(user=user)
+    addresses = Address.objects.filter(user=user)
+    notification_pref, _ = NotificationPreference.objects.get_or_create(user=user)
+    wishlist_items = Wishlist.objects.filter(user=user)
+    orders = Order.objects.filter(user=user).order_by('-order_date')  # Most recent first
+    order_count = orders.count()
+
+    if request.method == 'POST':
+        if 'firstName' in request.POST and 'lastName' in request.POST:
+            user.first_name = request.POST.get('firstName')
+            user.last_name = request.POST.get('lastName')
+            user.email = request.POST.get('email')
+            user.save()
+
+            profile.phone_number = request.POST.get('phone')
+            profile.birthdate = request.POST.get('birthdate')
+            profile.gender = request.POST.get('gender')
+            profile.save()
+
+            return redirect('personal_info')  # reload with updated data
+        
+        elif 'notification_form' in request.POST:
+            # Update notification preferences
+            notification_pref.order_status = 'orderStatusNotif' in request.POST
+            notification_pref.shipping_updates = 'shippingNotif' in request.POST
+            notification_pref.security_alerts = 'securityNotif' in request.POST
+            notification_pref.password_changes = 'passwordNotif' in request.POST
+            notification_pref.promotions = 'promoNotif' in request.POST
+            notification_pref.new_products = 'newProductNotif' in request.POST
+            notification_pref.recommendations = 'recommendNotif' in request.POST
+            notification_pref.save()
+
+            messages.success(request, 'Notification preferences updated successfully.')
+            return redirect('personal_info')
+    
+    context = {
+        'user': user,
+        'profile': profile,
+        'addresses': addresses,
+        'notification_pref': notification_pref,
+         'wishlist_items': wishlist_items,
+         'orders': orders,  
+         'order_count':order_count,
+    }
+
+    return render(request, 'store/account.html', context)
 
 @login_required
 def account_orders(request):
@@ -366,6 +411,8 @@ def personal_info_view(request):
     addresses = Address.objects.filter(user=user)
     notification_pref, _ = NotificationPreference.objects.get_or_create(user=user)
     wishlist_items = Wishlist.objects.filter(user=user)
+    orders = Order.objects.filter(user=user).order_by('-order_date')  # Most recent first
+    order_count = orders.count()
 
     if request.method == 'POST':
         if 'firstName' in request.POST and 'lastName' in request.POST:
@@ -401,6 +448,8 @@ def personal_info_view(request):
         'addresses': addresses,
         'notification_pref': notification_pref,
          'wishlist_items': wishlist_items,
+         'orders': orders,  
+         'order_count':order_count,
     }
     return render(request, 'store/account.html', context)
 
